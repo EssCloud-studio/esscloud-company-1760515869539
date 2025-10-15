@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safelink Modern</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: cardEntrance 0.8s ease forwards;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .logo-icon {
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-right: 12px;
+            filter: drop-shadow(0 4px 6px rgba(99, 102, 241, 0.3));
+        }
+
+        .logo-text {
+            font-size: 2.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-weight: 400;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(-15px);
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 18px 50px 18px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="url"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeInUp 0.8s ease 0.8s forwards;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover::after {
+            left: 100%;
+        }
+
+        .button-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+        }
+
+        .loading.show {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .loading-text {
+            margin-top: 15px;
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 16px;
+            text-align: left;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .result-container.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: resultSlideIn 0.6s ease;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .result-icon {
+            font-size: 1.6rem;
+            color: var(--success);
+            margin-right: 12px;
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+
+        .result-url {
+            background: var(--light);
+            padding: 18px;
+            border-radius: 12px;
+            word-break: break-all;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-right: 60px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .result-url:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+
+        .copy-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1s forwards;
+        }
+
+        .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            padding: 0 10px;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.2));
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--dark);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            transition: all 0.4s ease;
+            z-index: 1000;
+            max-width: 90%;
+        }
+
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification-icon {
+            margin-right: 12px;
+            font-size: 1.3rem;
+        }
+
+        .error-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            text-align: center;
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .error-container.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .error-icon {
+            font-size: 2.5rem;
+            color: var(--error);
+            margin-bottom: 10px;
+        }
+
+        .error-title {
+            font-weight: 600;
+            color: var(--error);
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .error-message {
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .retry-btn {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .retry-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .retry-icon {
+            margin-right: 8px;
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes resultSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 30px 20px;
+            }
+            
+            .logo-text {
+                font-size: 2rem;
+            }
+            
+            .logo-icon {
+                font-size: 2.2rem;
+            }
+            
+            .features {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .feature {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+            }
+            
+            .feature-icon {
+                margin-right: 15px;
+                margin-bottom: 0;
+                font-size: 1.7rem;
+            }
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="logo">
+                <i class="fas fa-shield-alt logo-icon"></i>
+                <span class="logo-text">Safelink</span>
+            </div>
+            <p class="subtitle">Convert your links securely with modern design</p>
+            
+            <div class="input-group">
+                <input type="url" id="urlInput" placeholder="Paste your Safelink URL here..." autocomplete="off">
+                <i class="fas fa-link input-icon"></i>
+            </div>
+            
+            <button onclick="processUrl()" id="convertBtn">
+                <i class="fas fa-bolt button-icon"></i>
+                Convert Now
+            </button>
+            
+            <div class="loading" id="loading">
+                <lottie-player 
+                    src="https://assets1.lottiefiles.com/packages/lf20_usmfx6bp.json"  
+                    background="transparent"
+                    speed="1"
+                    style="width: 120px; height: 120px;"
+                    loop
+                    autoplay>
+                </lottie-player>
+                <p class="loading-text">Memproses URL Anda...</p>
+            </div>
+            
+            <div class="result-container" id="resultContainer">
+                <div class="result-header">
+                    <i class="fas fa-check-circle result-icon"></i>
+                    <p class="result-title">Link Berhasil Diperoleh!</p>
+                </div>
+                <div class="result-url" id="resultUrl">
+                    <button class="copy-btn" onclick="copyUrl()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="error-container" id="errorContainer">
+                <i class="fas fa-exclamation-triangle error-icon"></i>
+                <h3 class="error-title" id="errorTitle">Terjadi Kesalahan</h3>
+                <p class="error-message" id="errorMessage">Gagal memproses URL. Silakan coba lagi.</p>
+                <button class="retry-btn" onclick="retryProcess()">
+                    <i class="fas fa-redo retry-icon"></i>
+                    Coba Lagi
+                </button>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-lock feature-icon"></i>
+                    <p class="feature-text">Aman & Terpercaya</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-bolt feature-icon"></i>
+                    <p class="feature-text">Cepat & Responsif</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-mobile-alt feature-icon"></i>
+                    <p class="feature-text">Optimized Mobile</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle notification-icon"></i>
+        <span id="notificationText">URL berhasil disalin!</span>
+    </div>
+
+    <script>
+        let currentUrl = '';
+        
+        async function processUrl() {
+            const urlInput = document.getElementById('urlInput');
+            const loading = document.getElementById('loading');
+            const resultContainer = document.getElementById('resultContainer');
+            const errorContainer = document.getElementById('errorContainer');
+            const convertBtn = document.getElementById('convertBtn');
+            
+            currentUrl = urlInput.value.trim();
+            
+            if (!currentUrl) {
+                showNotification('Silakan masukkan URL Safelink', 'error');
+                urlInput.focus();
+                return;
+            }
+            
+            // Validasi URL sederhana
+            if (!currentUrl.startsWith('http://') && !currentUrl.startsWith('https://')) {
+                showNotification('Format URL tidak valid. Pastikan URL dimulai dengan http:// atau https://', 'error');
+                return;
+            }
+            
+            // Sembunyikan kontainer hasil dan error
+            resultContainer.classList.remove('show');
+            errorContainer.classList.remove('show');
+            
+            // Tampilkan loading animation
+            loading.classList.add('show');
+            convertBtn.disabled = true;
+            
+            try {
+                // Tambahkan timeout untuk fetch
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // Timeout 10 detik
+                
+                const apiUrl = `https://dravinapi.vercel.app/downloader/tutwuri?url=${encodeURIComponent(currentUrl)}`;
+                const response = await fetch(apiUrl, { 
+                    signal: controller.signal,
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.status && data.data && data.data['result url']) {
+                    // Sembunyikan loading
+                    loading.classList.remove('show');
+                    
+                    // Tampilkan hasil dengan animasi
+                    const resultLink = data.data['result url'];
+                    const resultUrlElement = document.getElementById('resultUrl');
+                    resultUrlElement.innerHTML = `
+                        <a href="${resultLink}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">${resultLink}</a>
+                        <button class="copy-btn" onclick="copyUrl()">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    `;
+                    resultContainer.classList.add('show');
+                    
+                    // Scroll ke hasil
+                    resultContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    showNotification('URL berhasil dikonversi!', 'success');
+                } else {
+                    throw new Error('URL hasil tidak ditemukan dalam respons');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                loading.classList.remove('show');
+                
+                // Tampilkan pesan error yang sesuai
+                let errorTitle = 'Terjadi Kesalahan';
+                let errorMessage = 'Gagal memproses URL. Silakan coba lagi.';
+                
+                if (error.name === 'AbortError') {
+                    errorTitle = 'Timeout';
+                    errorMessage = 'Permintaan memakan waktu terlalu lama. Periksa koneksi internet Anda.';
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorTitle = 'Koneksi Gagal';
+                    errorMessage = 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.';
+                } else if (error.message.includes('HTTP error')) {
+                    errorTitle = 'Error Server';
+                    errorMessage = 'Server mengalami masalah. Silakan coba lagi nanti.';
+                }
+                
+                document.getElementById('errorTitle').textContent = errorTitle;
+                document.getElementById('errorMessage').textContent = errorMessage;
+                errorContainer.classList.add('show');
+                
+                showNotification('Gagal memproses URL', 'error');
+            } finally {
+                convertBtn.disabled = false;
+            }
+        }
+        
+        function retryProcess() {
+            document.getElementById('errorContainer').classList.remove('show');
+            processUrl();
+        }
+        
+        function copyUrl() {
+            const resultUrl = document.getElementById('resultUrl');
+            const link = resultUrl.querySelector('a').href;
+            
+            navigator.clipboard.writeText(link).then(() => {
+                showNotification('URL berhasil disalin ke clipboard!');
+            }).catch(err => {
+                console.error('Gagal menyalin URL: ', err);
+                showNotification('Gagal menyalin URL', 'error');
+            });
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            const notificationIcon = notification.querySelector('.notification-icon');
+            
+            notificationText.textContent = message;
+            
+            // Atur warna dan ikon berdasarkan tipe notifikasi
+            if (type === 'error') {
+                notification.style.background = 'var(--error)';
+                notificationIcon.className = 'fas fa-exclamation-circle notification-icon';
+            } else if (type === 'warning') {
+                notification.style.background = 'var(--warning)';
+                notificationIcon.className = 'fas fa-exclamation-triangle notification-icon';
+            } else {
+                notification.style.background = 'var(--success)';
+                notificationIcon.className = 'fas fa-check-circle notification-icon';
+            }
+            
+            // Tampilkan notifikasi
+            notification.classList.add('show');
+            
+            // Sembunyikan setelah 3 detik
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Enter key support
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processUrl();
+            }
+        });
+        
+        // Animasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efek ripple pada tombol
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Hanya untuk tombol utama, bukan copy button
+                    if (!this.classList.contains('copy-btn')) {
+                        const rect = this.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const ripple = document.createElement('span');
+                        ripple.style.left = x + 'px';
+                        ripple.style.top = y + 'px';
+                        ripple.classList.add('ripple');
+                        
+                        this.appendChild(ripple);
+                        
+                        setTimeout(() => {
+                            ripple.remove();
+                        }, 600);
+                    }
+                });
+            });
+            
+            // Auto-focus pada input
+            document.getElementById('urlInput').focus();
+        });
+    </script>
+</body>
+</html>
